@@ -59,4 +59,5 @@ def process_pdf():
 
 
 if __name__ == '__main__':
-    app.run(debug=False, port=8000)
+    app.run(debug=False, port=8000, ssl_context=(
+        './cert/fullchain.pem', './cert/privkey.pem'))
