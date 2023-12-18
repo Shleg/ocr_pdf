@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify
 from pdf_converter import download_file, jpg_path, jpg_to_cv_image, grayscale, thresh, noise_removal
 from text_extractor import extract_text_from_image
 from pattern_finder import find_info_in_list
-from service_func import delete_files_in_folder, display
+from service_func import delete_files_in_folder
 from config import pattern_dict, ALLOWED_MIME_TYPES
 import mimetypes
 
