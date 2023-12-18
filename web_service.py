@@ -1,10 +1,11 @@
 import json
-import os
 
+import cv2
 from flask import Flask, request, jsonify
 from pdf_converter import download_file, jpg_path, jpg_to_cv_image, grayscale, thresh, noise_removal
 from text_extractor import extract_text_from_image
 from pattern_finder import find_info_in_list
+from service_func import delete_files_in_folder, display
 from config import pattern_dict, ALLOWED_MIME_TYPES
 import mimetypes
 
@@ -33,29 +34,30 @@ def process_pdf():
 
         img_cv2_gray = grayscale(img_cv2)
 
-        img_bw = thresh(img_cv2_gray)
+        # img_bw = thresh(img_cv2_gray)
+        # cv2.imwrite('downloaded_files/img_bw.jpg', img_bw)
+        # display('downloaded_files/img_bw.jpg')
 
-        noise_img = noise_removal(img_bw)
+        # noise_img = noise_removal(img_bw)
+        # cv2.imwrite('downloaded_files/noise_img.jpg', noise_img)
+        # display('downloaded_files/noise_img.jpg')
 
-        ocr_result = extract_text_from_image(noise_img)
-        ocr_result_list = list(set(ocr_result.strip().split('\n')))
+        ocr_result_list = extract_text_from_image(img_cv2_gray)
 
         result = find_info_in_list(ocr_result_list, pattern_dict)
 
         # Преобразуем словарь в JSON-строку
         result_json = json.dumps(result, ensure_ascii=False)
 
-        # Удаляем файлы по указанным путям
-        if os.path.exists(pdf_file_path):
-            os.remove(pdf_file_path)
-        if os.path.exists(jpg_file_path):
-            os.remove(jpg_file_path)
-
         # Возвращаем результат в формате JSON
         return result_json.strip('%') or json.dumps({'result': 'Ничего не найдено'}, ensure_ascii=False)
 
     except Exception as e:
         return jsonify({'error': str(e)})
+
+    finally:
+        # Удаляем файлы
+        delete_files_in_folder('downloaded_files')
 
 
 if __name__ == '__main__':

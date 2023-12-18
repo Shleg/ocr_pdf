@@ -10,6 +10,6 @@ def find_info_in_list(phrases, pattern_dict):
             match = regex.search(phrase)
 
             if match:
-                matching_info[key] = phrase
+                matching_info[key] = match.group()
 
     return matching_info or None

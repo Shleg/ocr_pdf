@@ -58,7 +58,7 @@ def grayscale(image):
     return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 def thresh(image):
-    thresh, im_bw = cv2.threshold(image, 150, 180, cv2.THRESH_BINARY)
+    thresh, im_bw = cv2.threshold(image, 130, 230, cv2.THRESH_BINARY)
     return im_bw
 
 
