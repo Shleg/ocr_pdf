@@ -1,7 +1,7 @@
 import json
 
 import cv2
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify , make_response
 from pdf_converter import download_file, jpg_path, jpg_to_cv_image, grayscale, thresh, noise_removal
 from text_extractor import extract_text_from_image
 from pattern_finder import find_info_in_list
@@ -49,8 +49,17 @@ def process_pdf():
         # Преобразуем словарь в JSON-строку
         result_json = json.dumps(result, ensure_ascii=False)
 
-        # Возвращаем результат в формате JSON
-        return result_json.strip('%') or json.dumps({'result': 'Ничего не найдено'}, ensure_ascii=False)
+        # Создаем объект ответа
+        response = make_response(
+            result_json.strip('%') or json.dumps({'result': 'Ничего не найдено'}, ensure_ascii=False))
+
+        # Устанавливаем заголовки CORS
+        response.headers.add('Access-Control-Allow-Origin', 'https://www.gcd-russia.com')
+        response.headers.add('Access-Control-Allow-Methods', 'POST')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+
+        # Возвращаем ответ
+        return response
 
     except Exception as e:
         return jsonify({'error': str(e)})
