@@ -35,7 +35,5 @@ WORKDIR /app
 # Укажите порт, на котором будет работать приложение
 EXPOSE 8000
 
-RUN ls -l /app
-
 # Запустите приложение при старте контейнера
 CMD ["gunicorn", "--preload", "-w", "4", "-b", "0.0.0.0:8000", "web_service:app", "--certfile", "fullchain.pem", "--keyfile", "privkey.pem", "-n", "web_service", "--reload"]

@@ -1,7 +1,8 @@
 import json
 
 import cv2
-from flask import Flask, request, jsonify , make_response
+from flask import Flask, request, jsonify, make_response
+from flask_cors import CORS
 from pdf_converter import download_file, jpg_path, jpg_to_cv_image, grayscale, thresh, noise_removal
 from text_extractor import extract_text_from_image
 from pattern_finder import find_info_in_list
@@ -10,6 +11,7 @@ from config import pattern_dict, ALLOWED_MIME_TYPES
 import mimetypes
 
 app = Flask(__name__)
+CORS(app)
 
 
 def is_valid_pdf(file_path):
@@ -17,8 +19,16 @@ def is_valid_pdf(file_path):
     return file_mime in ALLOWED_MIME_TYPES
 
 
-@app.route('/process_pdf', methods=['POST'])
+@app.route('/process_pdf', methods=['POST', 'OPTIONS'])
 def process_pdf():
+    if request.method == 'OPTIONS':
+        # Обработка предварительного запроса
+        response = make_response()
+        response.headers.add('Access-Control-Allow-Origin', 'https://www.gcd-russia.com')
+        response.headers.add('Access-Control-Allow-Methods', 'POST')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+        return response
+
     try:
         # Получаем ссылку на PDF из тела запроса
         pdf_url = request.json.get('pdf_url')
