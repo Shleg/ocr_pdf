@@ -13,11 +13,13 @@ def find_matching_pattern_in_phrase(phrase, pattern):
         else:
             return None  # Совпадений не найдено
 
+
 def find_info_in_list(phrases, pattern_dict):
     matching_info = {}
-    found_match = False
-    for phrase in phrases:
-        for key, patterns in pattern_dict.items():
+
+    for key, patterns in pattern_dict.items():
+        found_match = False
+        for phrase in phrases:
             for pattern in patterns:
                 match = find_matching_pattern_in_phrase(phrase, pattern)
 
@@ -28,8 +30,5 @@ def find_info_in_list(phrases, pattern_dict):
 
             if found_match:
                 break
-
-        if found_match:
-            break
 
     return matching_info or None
