@@ -1,4 +1,14 @@
 import re
+import dateparser
+
+
+def parse_date(input_string):
+    parsed_date = dateparser.parse(input_string)
+    if parsed_date:
+        formatted_date = parsed_date.strftime('%d.%m.%Y')
+        return formatted_date
+    else:
+        return None  # Если не удалось распознать дату, возвращаем None
 
 
 def find_matching_pattern_in_phrase(phrase, pattern):
@@ -24,7 +34,10 @@ def find_info_in_list(phrases, pattern_dict):
                 match = find_matching_pattern_in_phrase(phrase, pattern)
 
                 if match:
-                    matching_info[key] = match
+                    if key == 'date':
+                        matching_info[key] = parse_date(match)
+                    else:
+                        matching_info[key] = match
                     found_match = True
                     break
 
