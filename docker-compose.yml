@@ -1,0 +1,9 @@
+version: '3'
+services:
+  ocr_pdf:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./certbot/conf/:/etc/nginx/ssl/:ro
+    command: gunicorn --preload -w 4 -b 0.0.0.0:8000 web_service:app --certfile /etc/nginx/ssl/live/gcd.webtm.ru/fullchain.pem --keyfile /etc/nginx/ssl/live/gcd.webtm.ru/privkey.pem -n web_service --reload
