@@ -29,7 +29,7 @@ def find_info_in_list(phrases, pattern_dict):
 
     for key, patterns in pattern_dict.items():
         found_match = False
-        for phrase in phrases:
+        for phrase in phrases.sort:
             for pattern in patterns:
                 match = find_matching_pattern_in_phrase(phrase, pattern)
 
