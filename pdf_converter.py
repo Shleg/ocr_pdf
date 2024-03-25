@@ -1,6 +1,9 @@
 import os
+
+import PyPDF2
 import cv2
 import numpy as np
+import pytesseract
 import requests
 from urllib.parse import urlparse, unquote
 from pdf2image import convert_from_path
@@ -56,6 +59,7 @@ def jpg_to_cv_image(jpeg_path):
 
 def grayscale(image):
     return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
 
 def thresh(image):
     thresh, im_bw = cv2.threshold(image, 130, 230, cv2.THRESH_BINARY)

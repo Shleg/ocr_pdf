@@ -56,12 +56,15 @@ def process_pdf():
 
         result = find_info_in_list(ocr_result_list, pattern_dict)
 
-        # Преобразуем словарь в JSON-строку
-        result_json = json.dumps(result, ensure_ascii=False)
+        if result is not None:
+            # Преобразуем словарь в JSON-строку
+            result_json = json.dumps(result, ensure_ascii=False)
 
-        # Создаем объект ответа
-        response = make_response(
-            result_json.strip('%') or json.dumps({'result': 'Ничего не найдено'}, ensure_ascii=False))
+            # Создаем объект ответа
+            response = make_response(
+                result_json.strip('%'))
+        else:
+            response = make_response(json.dumps({'result': 'Ничего не найдено'}, ensure_ascii=False))
 
         # Устанавливаем заголовки CORS
         response.headers.add('Access-Control-Allow-Origin', 'https://www.gcd-russia.com')
