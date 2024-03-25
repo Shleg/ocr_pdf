@@ -1,13 +1,11 @@
 import os
+from urllib.parse import urlparse, unquote
 
-import PyPDF2
 import cv2
 import numpy as np
-import pytesseract
 import requests
-from urllib.parse import urlparse, unquote
-from pdf2image import convert_from_path
 from PIL import Image
+from pdf2image import convert_from_path
 
 
 def download_file(file_url, output_directory='downloaded_files'):
